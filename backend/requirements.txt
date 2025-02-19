@@ -5,4 +5,6 @@ bcrypt
 python-dotenv
 Flask-Migrate
 psycopg2-binary
+prometheus-flask-exporter
+logging
 
