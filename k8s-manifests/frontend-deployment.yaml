@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: holadmex/3-tier-web-architecture-frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "http://backend-service.dev.svc.cluster.local:5000"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: frontend-logs
+          mountPath: /var/log/nginx
+      - name: filebeat
+        image: docker.elastic.co/beats/filebeat:8.11.1
+        args: ["-c", "/usr/share/filebeat/filebeat.yml", "-e"]
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: ELASTIC_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: elasticsearch-credentials
+              key: password
+        volumeMounts:
+        - name: frontend-logs
+          mountPath: /var/log/nginx
+        - name: filebeat-config
+          mountPath: /usr/share/filebeat/filebeat.yml
+          subPath: filebeat.yml
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "300m"
+      volumes:
+      - name: frontend-logs
+        emptyDir: {}
+      - name: filebeat-config
+        configMap:
+          name: filebeat-frontend-config

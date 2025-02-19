@@ -1,0 +1,69 @@
+- name: Create logging namespace
+  kubernetes.core.k8s:
+    kubeconfig: "/home/ubuntu/.kube/config"
+    name: logging
+    kind: Namespace
+    state: present
+
+- name: Add Elastic Helm repository
+  kubernetes.core.helm_repository:
+    name: elastic
+    repo_url: https://helm.elastic.co
+    state: present
+
+- name: Deploy Elasticsearch
+  kubernetes.core.helm:
+    name: elasticsearch
+    chart_ref: elastic/elasticsearch
+    release_namespace: logging
+    values:
+      replicas: 1
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1"
+          memory: "2Gi"
+    wait: yes
+    timeout: 600s
+  environment:
+    KUBECONFIG: "/home/ubuntu/.kube/config"
+
+- name: Deploy Logstash
+  kubernetes.core.helm:
+    name: logstash
+    chart_ref: elastic/logstash
+    release_namespace: logging
+    values:
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1"
+          memory: "2Gi"
+    wait: yes
+    timeout: 600s
+  environment:
+    KUBECONFIG: "/home/ubuntu/.kube/config"
+
+- name: Deploy Kibana
+  kubernetes.core.helm:
+    name: kibana
+    chart_ref: elastic/kibana
+    release_namespace: logging
+    values:
+      resources:
+        requests:
+          cpu: "500m"
+          memory: "1Gi"
+        limits:
+          cpu: "1"
+          memory: "2Gi"
+      service:
+        type: NodePort
+    wait: yes
+    timeout: 600s
+  environment:
+    KUBECONFIG: "/home/ubuntu/.kube/config"

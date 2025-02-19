@@ -1,0 +1,52 @@
+---
+- name: Add Grafana repository
+  kubernetes.core.helm_repository:
+    kubeconfig: "/home/ubuntu/.kube/config"
+    name: grafana
+    repo_url: https://grafana.github.io/helm-charts
+    state: present
+
+- name: Create Grafana values file
+  copy:
+    dest: /tmp/grafana-values.yaml
+    content: |
+      service:
+        type: NodePort
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "100m"
+      persistence:
+        enabled: true
+        size: 10Gi
+      datasources:
+        datasources.yaml:
+          apiVersion: 1
+          datasources:
+            - name: Prometheus
+              type: prometheus
+              url: http://prometheus-server.monitoring.svc.cluster.local:9090
+              isDefault: true
+
+- name: Install Grafana
+  kubernetes.core.helm:
+    name: grafana
+    chart_ref: grafana/grafana
+    release_namespace: monitoring
+    create_namespace: true
+    values_files:
+      - /tmp/grafana-values.yaml
+    wait: yes
+  environment:
+    KUBECONFIG: /home/ubuntu/.kube/config
+
+- name: Get Grafana admin password
+  command: kubectl --kubeconfig /home/ubuntu/.kube/config get secret grafana -n monitoring -o yaml
+  register: grafana_secret_output
+
+- name: Display Grafana login credentials
+  debug:
+    msg:
+      - "Username: admin"
+      - "Password: {{ grafana_secret_output.stdout | from_yaml | json_query('items[0].data.admin_password') | b64decode }}"
+

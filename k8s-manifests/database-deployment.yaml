@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+      - name: database
+        image: holadmex/postgres:13
+        ports:
+        - containerPort: 5432
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m" 
+          #limits:
+            #memory: "2Mi"
+            #cpu: "1"
+        env:
+        - name: POSTGRES_USER
+          value: "ecommerce"
+        - name: POSTGRES_PASSWORD
+          value: "testing123"
+        - name: POSTGRES_DB
+          value: "ecommerce_db"
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-storage
+      volumes:
+        #- name: db-storage
+        #persistentVolumeClaim:
+        #claimName: db-pvc
+      - name: db-storage
+        emptyDir: {}
+
+        
+
