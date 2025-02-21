@@ -5,4 +5,4 @@ metadata:
   namespace: dev
 type: Opaque
 data:
-  password: "dUZ2YlhMZjA1ZVUyZkFYUQ=="  # Your base64 encoded password
+  password: "xxxx"  # Your base64 encoded password

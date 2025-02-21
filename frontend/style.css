@@ -1,147 +1,318 @@
-/* Global Styling */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #2C3E50; /* Navy Blue for primary text */
-  background-color: #F5F5DC; /* Light Beige background */
+/* CSS Reset and Variables */
+:root {
+  /* Color Palette */
+  --primary-navy: #2C3E50;
+  --primary-beige: #F5F5DC;
+  --accent-burgundy: #8E354A;
+  --accent-gold: #D4AF37;
+  --accent-orange: #E58E26;
+  --forest-green: #355C47;
+  --cool-gray: #7F8C8D;
+  --light-pink: #F8BBD0;
+  --white: #FFFFFF;
+  --error-red: #D32F2F;
+  --success-green: #2E7D32;
+  
+  /* Spacing */
+  --spacing-xs: 5px;
+  --spacing-sm: 10px;
+  --spacing-md: 20px;
+  --spacing-lg: 30px;
+  
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* Base Styles */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* Header Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--primary-navy);
+  background-color: var(--primary-beige);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Header Styles */
 header {
-  background-color: #2C3E50; /* Navy Blue for header background */
-  color: #FFFFFF; /* White text */
-  padding: 20px;
+  background-color: var(--primary-navy);
+  color: var(--white);
+  padding: var(--spacing-md);
   text-align: center;
-  border-bottom: 3px solid #8E354A; /* Deep Burgundy accent */
+  border-bottom: 3px solid var(--accent-burgundy);
+  box-shadow: var(--shadow-md);
 }
 
-/* Button Styling */
+/* Navigation and Auth Links */
+.auth-links {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm);
+}
+
+.auth-links a {
+  color: var(--white);
+  text-decoration: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-normal);
+  position: relative;
+}
+
+.auth-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-gold);
+  transition: width var(--transition-normal);
+}
+
+.auth-links a:hover::after {
+  width: 100%;
+}
+
+/* Button Styles */
 button {
-  background-color: #D4AF37; /* Warm Gold */
-  color: #FFFFFF; /* White text */
+  background-color: var(--accent-gold);
+  color: var(--white);
   border: none;
-  padding: 10px 20px;
-  margin: 10px;
-  border-radius: 5px;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin: var(--spacing-sm) 0;
+  border-radius: var(--radius-sm);
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
 }
 
 button:hover {
-  background-color: #E58E26; /* Muted Orange */
+  background-color: var(--accent-orange);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
-/* Links */
-a {
-  color: #355C47; /* Forest Green */
-  text-decoration: none;
-  font-weight: bold;
+button:active {
+  transform: translateY(0);
 }
 
-a:hover {
-  color: #8E354A; /* Deep Burgundy */
-  text-decoration: underline;
+button:disabled {
+  background-color: var(--cool-gray);
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* Footer Styling */
-footer {
-  background-color: #355C47; /* Forest Green */
-  color: #FFFFFF; /* White text */
+/* Form Styles */
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: var(--spacing-lg) auto;
+  background: var(--white);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all var(--transition-normal);
+}
+
+.form-container.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+input {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 2px solid var(--cool-gray);
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  transition: border-color var(--transition-normal);
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+/* Message Styles */
+.message {
+  padding: var(--spacing-sm);
+  margin: var(--spacing-sm) 0;
+  border-radius: var(--radius-sm);
   text-align: center;
-  padding: 15px;
-  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--transition-normal);
 }
 
-/* Card/Section Styling */
-.card {
-  background-color: #FFFFFF; /* White */
-  border: 1px solid #7F8C8D; /* Cool Gray border */
-  border-radius: 8px;
-  padding: 20px;
-  margin: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+.message.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.card h2 {
-  color: #2C3E50; /* Navy Blue */
+.error-message {
+  background-color: rgba(211, 47, 47, 0.1);
+  color: var(--error-red);
+  border: 1px solid var(--error-red);
 }
 
-.card p {
-  color: #7F8C8D; /* Cool Gray text */
+.success-message {
+  background-color: rgba(46, 125, 50, 0.1);
+  color: var(--success-green);
+  border: 1px solid var(--success-green);
 }
 
-/* Styling for the Welcome section */
+/* Loading Spinner */
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--white);
+  animation: spin 1s ease-in-out infinite;
+  margin-right: var(--spacing-sm);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Welcome Section */
 #welcome {
-  background-color: #F8BBD0; /* Light Pink background */
-  color: #2C3E50; /* Navy Blue text */
-  padding: 20px;
-  display: none; /* Hidden by default */
+  background-color: var(--light-pink);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transform: scale(0.95);
+  opacity: 0;
+  transition: all var(--transition-normal);
 }
 
-#welcome .profile {
+#welcome.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.profile {
   display: flex;
   align-items: center;
+  gap: var(--spacing-sm);
 }
 
-#welcome .profile-icon {
-  width: 30px;
-  height: 30px;
-  margin-left: 10px;
+.profile-icon {
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-}
-
-/* Styling for login and signup forms */
-.form-container {
-  width: 300px;
-  margin: 50px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  display: none; /* Initially hide the form sections */
-  transition: all 0.3s ease-in-out; /* Smooth transition for visibility */
-}
-
-/* Show login and signup forms when they are toggled */
-#login.show, #signup.show {
-  display: block; /* Show when 'show' class is added */
-}
-
-/* Styling for form elements */
-input, button {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-}
-
-/* Styling for the main page (home section) */
-.products {
-  padding: 20px;
-}
-
-/* Styling for authentication links */
-.auth-links a {
-  color: white;
-  margin: 0 10px;
-  text-decoration: none;
-  cursor: pointer;
+  background-color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
   font-weight: bold;
 }
 
-/* Hover effect for authentication links */
-.auth-links a:hover {
-  text-decoration: underline;
-  color: #D81B60; /* Change color on hover */
+/* Card Component */
+.card {
+  background-color: var(--white);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  margin: var(--spacing-md);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-normal);
 }
 
-/* Hiding login and signup forms when they are not active */
-#login, #signup {
-  display: none;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
 }
 
-/* Adding more specific styling for the home page and sections */
-#home {
-  padding: 20px;
+/* Footer */
+footer {
+  background-color: var(--forest-green);
+  color: var(--white);
+  text-align: center;
+  padding: var(--spacing-md);
+  margin-top: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-container {
+    margin: var(--spacing-md);
+    padding: var(--spacing-sm);
+  }
+  
+  .auth-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .card {
+    margin: var(--spacing-sm);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus States */
+:focus {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  .auth-links, button {
+    display: none;
+  }
+  
+  body {
+    background: var(--white);
+    color: black;
+  }
 }

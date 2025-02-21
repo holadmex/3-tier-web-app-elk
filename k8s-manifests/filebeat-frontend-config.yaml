@@ -26,14 +26,14 @@ data:
     setup.kibana:
       host: "https://kibana-kibana.logging.svc.cluster.local:5601"
       username: "elastic"
-      password: "uFvbXLf05eU2fAXQ"
+      password: "xxx"
       ssl.enabled: true
       ssl.verification_mode: none
 
     output.elasticsearch:
       hosts: ["https://elasticsearch-master.logging.svc.cluster.local:9200"]
       username: "elastic"
-      password: "uFvbXLf05eU2fAXQ"
+      password: "xxx"
       index: "frontend-logs-%{+yyyy.MM.dd}"
       ssl.enabled: true
       ssl.verification_mode: none

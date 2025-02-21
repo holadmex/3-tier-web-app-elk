@@ -1,59 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-commerce Store</title>
-  <link rel="stylesheet" href="style.css"> <!-- External CSS file -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Online store with user authentication and product showcase">
+    <meta name="theme-color" content="#2C3E50">
+    <title>E-commerce Store</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Preload critical assets -->
+    <link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="script.js" as="script">
 </head>
 <body>
-  <header>
-    <h1>Welcome to Our Store</h1>
-    <div class="auth-links">
-      <a href="#" id="show-login">Login</a> | <a href="#" id="show-signup">Signup</a>
+    <a href="#main-content" class="skip-link visually-hidden">Skip to main content</a>
+    
+    <header role="banner">
+        <div class="header-content">
+            <h1>Welcome to Our Store</h1>
+            <nav role="navigation" aria-label="User authentication">
+                <div class="auth-links">
+                    <a href="#" id="show-login" aria-label="Show login form">
+                        <span class="icon">👤</span> Login
+                    </a>
+                    <a href="#" id="show-signup" aria-label="Show signup form">
+                        <span class="icon">✏️</span> Signup
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <!-- Home section -->
+        <section id="home" class="products" aria-label="Featured products">
+            <div class="section-header">
+                <h2>Featured Products</h2>
+                <p class="section-description">Discover our latest and most popular items</p>
+            </div>
+            <div id="product-list" class="product-grid" role="list"></div>
+        </section>
+
+        <!-- Login Section -->
+        <section id="login" class="form-container" aria-labelledby="login-title">
+            <h2 id="login-title">Login to Your Account</h2>
+            <form id="loginForm" novalidate>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email"
+                        autocomplete="email"
+                        required
+                        aria-required="true"
+                        aria-describedby="email-error"
+                    >
+                    <span id="email-error" class="error-text" role="alert"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            autocomplete="current-password"
+                            required
+                            aria-required="true"
+                            aria-describedby="password-error"
+                        >
+                        <button 
+                            type="button" 
+                            class="toggle-password"
+                            aria-label="Toggle password visibility"
+                        >👁️</button>
+                    </div>
+                    <span id="password-error" class="error-text" role="alert"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary-button" data-default-text="Login">
+                        Login
+                    </button>
+                    <a href="#" class="forgot-password">Forgot password?</a>
+                </div>
+            </form>
+            <div id="login-message" class="message" role="alert" aria-live="polite"></div>
+        </section>
+
+        <!-- Signup Section -->
+        <section id="signup" class="form-container" aria-labelledby="signup-title">
+            <h2 id="signup-title">Create an Account</h2>
+            <form id="signupForm" novalidate>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        name="username"
+                        autocomplete="username"
+                        required
+                        aria-required="true"
+                        minlength="3"
+                        aria-describedby="username-error"
+                    >
+                    <span id="username-error" class="error-text" role="alert"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input 
+                        type="email" 
+                        id="signup-email" 
+                        name="email"
+                        autocomplete="email"
+                        required
+                        aria-required="true"
+                        aria-describedby="signup-email-error"
+                    >
+                    <span id="signup-email-error" class="error-text" role="alert"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <div class="password-input-wrapper">
+                        <input 
+                            type="password" 
+                            id="signup-password" 
+                            name="password"
+                            autocomplete="new-password"
+                            required
+                            aria-required="true"
+                            minlength="8"
+                            aria-describedby="signup-password-requirements signup-password-error"
+                        >
+                        <button 
+                            type="button" 
+                            class="toggle-password"
+                            aria-label="Toggle password visibility"
+                        >👁️</button>
+                    </div>
+                    <p id="signup-password-requirements" class="password-requirements">
+                        Password must be at least 8 characters long
+                    </p>
+                    <span id="signup-password-error" class="error-text" role="alert"></span>
+                </div>
+
+                <button type="submit" class="primary-button" data-default-text="Create Account">
+                    Create Account
+                </button>
+            </form>
+            <div id="signup-message" class="message" role="alert" aria-live="polite"></div>
+        </section>
+
+        <!-- Welcome Section -->
+        <section id="welcome" class="products" aria-labelledby="welcome-title">
+            <div class="welcome-header">
+                <h2 id="welcome-title">Welcome to Our Store</h2>
+                <div class="profile" role="status">
+                    <div class="profile-info">
+                        <span id="welcome-user">Welcome, User!</span>
+                        <button type="button" class="logout-button" aria-label="Logout">
+                            Logout
+                        </button>
+                    </div>
+                    <div class="profile-icon" aria-hidden="true"></div>
+                </div>
+            </div>
+            
+            <div class="section-content">
+                <h3>Featured Products</h3>
+                <div id="welcome-product-list" class="product-grid" role="list"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2025 E-commerce Store. All rights reserved.</p>
+    </footer>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay" role="alert" aria-busy="true" hidden>
+        <div class="spinner"></div>
+        <p>Loading...</p>
     </div>
-  </header>
 
-  <!-- Home section (index) -->
-  <div id="home" class="products">
-    <h2>Featured Products</h2>
-    <div id="product-list"></div>
-  </div>
-
-  <!-- Login Section -->
-  <div id="login" class="form-container">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-    </form>
-    <p id="login-message"></p>
-  </div>
-
-  <!-- Signup Section -->
-  <div id="signup" class="form-container">
-    <h2>Signup</h2>
-    <form id="signupForm">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="email" id="signup-email" placeholder="Email" required>
-      <input type="password" id="signup-password" placeholder="Password" required>
-      <button type="submit">Signup</button>
-    </form>
-    <p id="signup-message"></p>
-  </div>
-
-  <!-- Welcome Section -->
-  <div id="welcome" class="products">
-    <h2>Welcome to Our Store</h2>
-    <div class="profile">
-      <span id="welcome-user">Welcome, User!</span>
-      <img src="profile-icon.png" alt="Profile" class="profile-icon" />
-    </div>
-    <h3>Featured Products</h3>
-    <div id="product-list"></div>
-  </div>
-
-  <script src="script.js"></script> <!-- External JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
